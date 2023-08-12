@@ -1,0 +1,26 @@
+{
+  "name": "@mikosoft/functionflow",
+  "version": "1.0.0",
+  "title": "FunctionFlow",
+  "description": "FunctionFlow controls JS function execution: serial/parallel, repetition, time delays; start, stop, pause - more powerful than async npm, uses Promises, async/await.",
+  "keywords": [
+    "functionflow",
+    "flow of functions",
+    "functions control",
+    "javascript functions",
+    "js functions",
+    "function control",
+    "async"
+  ],
+  "author": "Mikosoft",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:miko-soft/functionflow.git"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
