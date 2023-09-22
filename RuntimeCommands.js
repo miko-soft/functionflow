@@ -206,35 +206,14 @@ class RuntimeCommands {
    * For example: x.product.name = ' Red car ' or x.product.name = " Red car"
    */
   _setXProperty(line) {
+    if (!/^this\./.test(line)) { line = 'this.' + line + ';'; }
     try {
-      const matched = line.match(/(.*)\s*=\s*(.*)/);
-
-      // get property name
-      const prop = matched[1].trim(); // x.product.name
-
-      // get value
-      let val = matched[2].trim(); // ' Red car '
-      val = val.replace(/^\'/, '').replace(/\'$/, ''); // remove single quote '
-      val = val.replace(/^\"/, '').replace(/\"$/, ''); // remove double quote "
-      val = this._typeConvertor(val);
-
-      const propSplitted = prop.split('.'); // ['x', 'product', 'name']
-      let i = 1;
-      let obj = this;
-      for (const prop of propSplitted) {
-        if (i !== propSplitted.length) { // not last property
-          obj[prop] = this[prop];
-          obj = obj[prop];
-        } else { // on last property associate the value
-          obj[prop] = val;
-        }
-        i++;
-      }
-
-      console.log(`new value:: ${prop} = ${JSON.stringify(val, null, 2)}`);
-
+      let func = new Function(line);
+      func = func.bind(this);
+      func();
+      console.log(`new x value:: ${line}`);
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message + `in: "${line}"`);
     }
   }
 
@@ -243,26 +222,17 @@ class RuntimeCommands {
   /**
    * Delete "x.field" value.
    * For example: delete x.product.name
-   */
+  */
   _deleteXfield(line) {
+    let xField = line.replace('delete', '').trim(); // x.product.name
+    if (!/^this\./.test(xField)) { xField = 'this.' + xField; }
     try {
-      const prop = line.replace('delete', '').trim(); // x.product.name
-      const propSplitted = prop.split('.'); // ['x', 'product', 'name']
-
-      let i = 1;
-      let obj = this;
-      for (const prop of propSplitted) {
-        if (i !== propSplitted.length) { // not last property
-          obj[prop] = this[prop];
-          obj = obj[prop];
-        } else { // on last property delete the field
-          delete obj[prop];
-        }
-        i++;
-      }
-      console.log(`The field ${prop} is deleted.`);
+      let func = new Function(`delete ${xField};`);
+      func = func.bind(this);
+      func();
+      console.log(`deleted x field:: ${xField}`);
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message + `in: "${xField}"`);
     }
   }
 
