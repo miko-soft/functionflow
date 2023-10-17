@@ -44,8 +44,8 @@ const main = async (input, eventEmitter) => {
 const inp = 5;
 const eventEmitter = new EventEmitter();
 main(inp, eventEmitter)
-  .then(res => console.log('RES:: ', res))
-  .catch(err => console.error('ERR:: ', err));
+  .then(output => console.log('OUTPUT:: ', output))
+  .catch(err => console.error('ERROR:: ', err));
 
 
 
@@ -120,6 +120,6 @@ f1:: 9
 
    === delay 3400 ===
 
-RES::  9
+OUTPUT::  9
 
 */

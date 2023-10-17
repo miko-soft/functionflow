@@ -47,8 +47,8 @@ const f3 = function (x, lib) {
 
 
 // main
-const main = async (input) => {
-  const eventEmitter = new EventEmitter();
+const main = async (input, library) => {
+  const eventEmitter = library.eventEmitter || new EventEmitter();
   const ff = new FunctionFlow({ debug: true, msDelay: 800 }, eventEmitter);
 
   const x = 5;
@@ -66,8 +66,8 @@ const main = async (input) => {
 // execute main
 const input = { name: 'John Doe' };
 main(input)
-  .then(res => console.log('RES:: ', res))
-  .catch(err => console.error('ERR:: ', err));
+  .then(output => console.log('OUTPUT:: ', output))
+  .catch(err => console.error('ERROR:: ', err));
 ```
 
 Other examples are in /tests/ folder.
