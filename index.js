@@ -204,7 +204,7 @@ class FunctionFlow extends RuntimeCommands {
     this.lastExecuted = { method: this.one.name, args: Array.from(arguments) };
 
     if (this.status === 'pause') { await this._delayPause(this.msPause); }
-    if (this.status === 'stop') { return; }
+    if (this.status === 'stop') { return this.x; }
 
     if (this.debug) { this._debugger1(this.one.name, func, 0); }
 
