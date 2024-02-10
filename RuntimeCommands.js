@@ -45,7 +45,7 @@ class RuntimeCommands {
       } else if (line === 'i') {
         this._showInput();
 
-      } else if (/input/i.test(line) && /\.json|\.js/i.test(line)) {
+      } else if (/input.*\.json/i.test(line)) {
         console.log(':input loaded\n');
         this._loadInput(line);
 
@@ -68,6 +68,7 @@ class RuntimeCommands {
 
 
       } else if (line === 'e') {
+        // evaluate some js code
         console.log(':eval');
         rl.prompt(); // show > prompt
         this.flag = 'eval';
@@ -76,6 +77,7 @@ class RuntimeCommands {
         this.flag = undefined; // reset flag
 
       } else if (line === 'f') {
+        // write some function and execute it
         console.log(':func');
         rl.prompt(); // show > prompt
         this.flag = 'func';
@@ -84,10 +86,10 @@ class RuntimeCommands {
         this.flag = undefined; // reset flag
 
 
-      } else {
-        // press command s (stop) or p (pause)
-        console.log(`:serial task(s) execution`);
-        if (this.status === 'start') { this.pause(); console.log(' The task is paused.'); }
+      } else if (/.js/i.test(line)) {
+        // execute functions serially
+        console.log(`:serial function(s) execution`);
+        if (this.status === 'start') { console.log(' The skript is not paused.'); return; }
         this.runtimeTest = true;
         await this._exeSerial(line); // line: 'openLoginPage, login'
         this.runtimeTest = false;
@@ -162,8 +164,8 @@ class RuntimeCommands {
   _loadInput(inputFile) {
     try {
       const inputFile_path = path.join(process.cwd(), inputFile);
-      delete require.cache[inputFile_path]; // IMPORTANT!!! Delete npm cache because we want to have fresh file data
-      this.lib.input = require(inputFile_path);
+      const inputJson = fs.readFileSync(inputFile_path, 'utf-8');
+      this.lib.input = JSON.parse(inputJson);
       console.log(this.lib.input);
     } catch (err) {
       console.log(err.message);
@@ -278,11 +280,10 @@ class RuntimeCommands {
 
 
   /**
-    * Execute functions serially. Stop the task before using this command (s).
+    * Execute functions serially. Stop the skript before using this command (s).
     * @param {String} files - 'login.js, extractData.js'
     */
   async _exeSerial(files) {
-
     const files_arr = files.split(',');
 
     try {
@@ -299,8 +300,10 @@ class RuntimeCommands {
 
         let func;
         if (tf) {
-          delete require.cache[file_path]; // IMPORTANT!!! Delete npm cache because we want to have fresh file data
-          func = require(file_path);
+          const funcString = fs.readFileSync(file_path, 'utf-8');
+          console.log(funcString);
+          eval(funcString);
+          func = module.exports;
           funcs.push(func);
         } else {
           throw new Error(`Function NOT FOUND: ${file_path}`);

@@ -249,31 +249,34 @@ await ff.delayRnd(3000, 8000); // delay between 3 and 8 seconds
 It enables real-time control over functions execution, allowing it to be paused, resumed, or stopped, as well as facilitating isolated function testing, ultimately conserving significant developer time.
 
 #### p
-Use this command to pause already started task.
+Use this command to pause already started skript.
 Notice: This command will not pause currently running function. That function will be executed till the end and the next function will be paused.
 For example if we have **ff.serial([f1, f2, f3])** and **p** command is executed during f2 runtime, then f2 will finish but f3 will not start.
 
 #### r
-Resume the paused task. Usually it's used after command **p** when the paused task should be started again.
+Resume the paused skript. Usually it's used after command **p** when the paused skript should be started again.
 
 #### s
-Stop the running task. When this command is used, the current function will be executed to completion, and all subsequent functions will not be executed.
+Stop the running skript. When this command is used, the current function will be executed to completion, and all subsequent functions will not be executed.
+
 
 #### k
 Kill the running NodeJS process and exit to the terminal command prompt. It's simmilar to CTRL+C.
 
+
 #### i
 Show the input which is currently in use **this.lib.input**.
 
+
 #### input.json
-When the command contains **"input"** and **".json"** or **.js** at the end it will reload the input file.
-For example *myInput5.json* will load new input data and the task will continue to work with that data. It's useful when we want to see how different inputs will reflect to the function execution.
+When the command contains **"input"** and **".json"** at the end it will reload the input file.
+For example *myInput5.json* will load new input data and the skript will continue to work with that data. It's useful when we want to see how different inputs will reflect to the function execution.
 
 **Important:** Add input into the *lib* parameter with *ff.libAdd({input});*.
 
-
 #### input.field = value
 Set the input property.
+
 
 #### x
 Show the "x" (transitional variable) value.
@@ -286,16 +289,14 @@ Delete the x field (property).
 
 
 #### e
-Evaluate some Javascript code.
-It's simmilar to command **$ node** and it's useful when developer needs to test some JS code snippet quickly.
+Evaluate some Javascript code in the runtime.
+It's simmilar to command **$ node** and it's useful when developer needs to test some JS code snippet quickly without exiting from the skript.
 
 #### f
-Test the FunctionFlow function code "ff_code" which has two parameters "x" and "lib" **(x, lib) => { ...ff_code... }**.
+Write some function which has two parameters "x" and "lib" **(x, lib) => { ...ff_code... }** and test it in the runtime.
 
-#### f1 [,f2, ...]
-If the command doesn't correspond to any of the previous commands then it will search for the function file to execute it.
-For example if the command is **login** it will search for "login.js" and if exists it will execute it.
-Also it's possible to define multiple functions to be executed serially <i>ff.serial[f1, f2, f3]</i>.
+#### f1.js, f2.js, f3.js
+Execute functions f1,js, f2.js and f3.js serially with <i>ff.serial[f1, f2, f3]</i> in the runtime.
 
 
 
