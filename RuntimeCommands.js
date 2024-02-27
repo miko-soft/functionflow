@@ -301,7 +301,7 @@ class RuntimeCommands {
         let func;
         if (tf) {
           const funcString = fs.readFileSync(file_path, 'utf-8');
-          console.log(funcString);
+          // console.log(funcString);
           eval(funcString);
           func = module.exports;
           funcs.push(func);
