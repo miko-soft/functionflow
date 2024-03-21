@@ -27,7 +27,7 @@ class RuntimeCommands {
       line = line.replace(/\s+/g, ' ').trim();
 
       if (line === '') {
-        // console.log('');
+        // console.log(':empty line (enter some command)');
       } else if (line === 'p') {
         console.log(':paused\n');
         this._pause();
@@ -86,10 +86,10 @@ class RuntimeCommands {
         this.flag = undefined; // reset flag
 
 
-      } else if (/.js/i.test(line)) {
+      } else {
         // execute functions serially
         console.log(`:serial function(s) execution`);
-        if (this.status === 'start') { console.log(' The skript is not paused.'); return; }
+        if (this.status === 'start') { this.pause(); console.log(' The task is paused.'); }
         this.runtimeTest = true;
         await this._exeSerial(line); // line: 'openLoginPage, login'
         this.runtimeTest = false;
@@ -314,7 +314,7 @@ class RuntimeCommands {
       await this.serial(funcs);
 
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   }
 
