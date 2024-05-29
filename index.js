@@ -324,6 +324,7 @@ class FunctionFlow extends RuntimeCommands {
     if (this.status === 'start') {
       this.eventEmitter.emit('ff-stop');
       this.status = 'stop';
+      this.delaysRemove();
     } else {
       throw new Error('Stop not allowed. Status must be "start".');
     }
