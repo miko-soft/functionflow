@@ -22,6 +22,9 @@ class FunctionFlow extends RuntimeCommands {
 
     // event emitter listeners
     this.eventEmitter = eventEmitter || new EventEmitter(); // use external eventEmitter to listen events 'ff-start', 'ff-pause' or 'ff-stop'
+    this.eventEmitter.removeAllListeners('ff-start');
+    this.eventEmitter.removeAllListeners('ff-stop');
+    this.eventEmitter.removeAllListeners('ff-pause');
     this.eventEmitter.on('ff-start', () => { if (this.debug) { this._debugger3(this.start.name); } this.status = 'start'; });
     this.eventEmitter.on('ff-stop', () => { if (this.debug) { this._debugger3(this.stop.name); } this.status = 'stop'; });
     this.eventEmitter.on('ff-pause', () => { if (this.debug) { this._debugger3(this.pause.name); } this.status = 'pause'; });
