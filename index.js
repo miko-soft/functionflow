@@ -22,12 +22,12 @@ class FunctionFlow extends RuntimeCommands {
 
     // event emitter listeners
     this.eventEmitter = eventEmitter || new EventEmitter(); // use external eventEmitter to listen events 'ff-start', 'ff-pause' or 'ff-stop'
-    this.eventEmitter.removeAllListeners('ff-start');
-    this.eventEmitter.removeAllListeners('ff-stop');
-    this.eventEmitter.removeAllListeners('ff-pause');
-    this.eventEmitter.on('ff-start', () => { if (this.debug) { this._debugger3(this.start.name); } this.status = 'start'; });
-    this.eventEmitter.on('ff-stop', () => { if (this.debug) { this._debugger3(this.stop.name); } this.status = 'stop'; });
-    this.eventEmitter.on('ff-pause', () => { if (this.debug) { this._debugger3(this.pause.name); } this.status = 'pause'; });
+    this.cb_start = () => { if (this.debug) { this._debugger3(this.start.name); } this.status = 'start'; };
+    this.cb_stop = () => { if (this.debug) { this._debugger3(this.stop.name); } this.status = 'stop'; };
+    this.cb_pause = () => { if (this.debug) { this._debugger3(this.pause.name); } this.status = 'pause'; };
+    this.eventEmitter.on('ff-start', this.cb_start);
+    this.eventEmitter.on('ff-stop', this.cb_stop);
+    this.eventEmitter.on('ff-pause', this.cb_pause);
 
     // global variable
     global.functionFlow = this;
@@ -52,6 +52,17 @@ class FunctionFlow extends RuntimeCommands {
 
     // listen for runtime commands: s,p,r,x, i, ...
     this.listen();
+  }
+
+
+  /**
+   * Remove all event listeners to prevent error:
+   * MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 error listeners added. Use emitter.setMaxListeners() to increase limit
+   */
+  rmListeners() {
+    this.eventEmitter.off('ff-start', this.cb_start);
+    this.eventEmitter.off('ff-stop', this.cb_stop);
+    this.eventEmitter.off('ff-pause', this.cb_pause);
   }
 
 
