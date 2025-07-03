@@ -1,6 +1,6 @@
 {
   "name": "@mikosoft/functionflow",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": "FunctionFlow",
   "description": "FunctionFlow controls JS function execution: serial/parallel, repetition, time delays; start, stop, pause - more powerful than async npm, uses Promises, async/await.",
   "keywords": [
