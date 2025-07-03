@@ -10,7 +10,10 @@ const RuntimeCommands = require('./RuntimeCommands.js');
 class FunctionFlow extends RuntimeCommands {
 
   /**
-   * @param {object} opts - options: {debug, msDelay}
+   * @param {object} opts - options: {debug, msDelay, rcListener}
+   * * debug - to use debugger or not
+   * * msDelay - delay after each function execution
+   * * rcListener - to listen for runtime commands: s,p,r,x, i, ...  Use true when FF is started in command line i.e. command "dex8 start ..." is used. Use false to prevent "Possible EventEmitter memory leak detected. 11 data listeners added to" due to rl.on('line', ...)
    * @param {EventEmitter} eventEmitter
    */
   constructor(opts = {}, eventEmitter) {
@@ -51,7 +54,7 @@ class FunctionFlow extends RuntimeCommands {
     this.runtimeTest = false;
 
     // listen for runtime commands: s,p,r,x, i, ...
-    this.listen();
+    opts.rcListener && this.listen();
   }
 
 

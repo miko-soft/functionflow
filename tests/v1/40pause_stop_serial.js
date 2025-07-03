@@ -62,7 +62,7 @@ setTimeout(() => {
 
 
 const main = async (input, eventEmitter) => {
-  const ff = new FunctionFlow({ debug: true, msDelay: 2000 }, eventEmitter);
+  const ff = new FunctionFlow({ debug: true, msDelay: 2000, rcListener: true }, eventEmitter);
 
   const x = input;
   const lib = { eventEmitter, ff };

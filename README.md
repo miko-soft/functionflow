@@ -49,7 +49,7 @@ const f3 = function (x, lib) {
 // main
 const main = async (input, library) => {
   const eventEmitter = library.eventEmitter || new EventEmitter();
-  const ff = new FunctionFlow({ debug: true, msDelay: 800 }, eventEmitter);
+  const ff = new FunctionFlow({ debug: true, msDelay: 800, rcListener: true }, eventEmitter);
 
   const x = 5;
   const lib = { input, ff };
@@ -76,10 +76,11 @@ Other examples are in /tests/ folder.
 
 ## API
 
-#### constructor(opts:{debug:boolean, msDelay:number}, eventEmitter:EventEmitter)
+#### constructor(opts:{debug:boolean, msDelay:number, rcListener:boolean}, eventEmitter:EventEmitter)
 - debug - show debug message
 - msDelay - delay between functions
-- eventEmitter - NodeJS event emitter object (connects with outer code)
+- rcListener - to listen for runtime commands: s,p,r,x, i, ...  Use true when FunctionFlow is used in terminal i.e. command "dex8 start ..." is used. Use false to prevent "Possible EventEmitter memory leak detected. 11 data listeners added to" due to rl.on('line', ...) when FunctionFlow is not used in terminal.
+- **eventEmitter** - NodeJS event emitter object (connects with outer code)
 
 
 #### xInject(x:any) :void
@@ -107,8 +108,9 @@ input------>|--f0-->|msDelay|--f3-->|msDelay|--f2-->|msDelay|------>output
 ```
 
 #### async serialEach(funcs:function[], arr:array) :any
-Execute funcs functions one by one and repeat it for every array element.
-The funcs chain is repeated the arr.length times. The "arr" element is stored in the "lib.serialEachElement" and can be used inside the function.
+Execute the functions in funcs sequentially for each element in the arr array. The entire chain of funcs is repeated exactly arr.length times—once per array element.
+During execution, the current array element is stored in **lib.serialEachElement** and can be accessed inside each function.
+Additionally, you can use **lib.serialEachKey** if needed.
 ```
 input------>|--f0-->|msDelay|--f3-->|msDelay|--f2-->|msDelay|------>output
             |                                            arr|
@@ -117,7 +119,7 @@ input------>|--f0-->|msDelay|--f3-->|msDelay|--f2-->|msDelay|------>output
 
 #### async serialRepeat(funcs:function[], n:number) :any
 Execute funcs functions one by one and repeat it n times.
-The funcs chain is repeated the n times. The iteration number is stored in the "lib.serialRepeatIteration" and can be used in the function.
+The funcs chain is repeated the n times. The iteration number is stored in the **lib.serialRepeatIteration** and can be accessed inside each function.
 ```
 input------>|--f0-->|msDelay|--f3-->|msDelay|--f2-->|msDelay|------>output
             |                                              n|

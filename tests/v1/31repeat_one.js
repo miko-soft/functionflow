@@ -21,7 +21,7 @@ const f3 = (x, lib) => {
 
 
 const main = async (input, eventEmitter) => {
-  const ff = new FunctionFlow({ debug: true, msDelay: 800 }, eventEmitter);
+  const ff = new FunctionFlow({ debug: true, msDelay: 800, rcListener: true }, eventEmitter);
 
   const x = input;
   const lib = { eventEmitter, ff };
